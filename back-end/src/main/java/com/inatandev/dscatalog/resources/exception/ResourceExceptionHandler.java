@@ -1,6 +1,6 @@
 package com.inatandev.dscatalog.resources.exception;
 
-import com.inatandev.dscatalog.services.exception.DatabaseExcepion;
+import com.inatandev.dscatalog.services.exception.DatabaseException;
 import com.inatandev.dscatalog.services.exception.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -27,8 +27,8 @@ public class ResourceExceptionHandler {
         return ResponseEntity.status(status).body(err);
     }
 
-    @ExceptionHandler(DatabaseExcepion.class)
-    public ResponseEntity<StandardError> database(DatabaseExcepion e, HttpServletRequest request) {
+    @ExceptionHandler(DatabaseException.class)
+    public ResponseEntity<StandardError> database(DatabaseException e, HttpServletRequest request) {
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
         StandardError err = new StandardError();

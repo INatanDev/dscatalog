@@ -4,18 +4,18 @@ import com.inatandev.dscatalog.dto.CategoryDTO;
 import com.inatandev.dscatalog.entities.Category;
 import com.inatandev.dscatalog.repositories.CategoryRepository;
 
-import com.inatandev.dscatalog.services.exception.DatabaseExcepion;
+import com.inatandev.dscatalog.services.exception.DatabaseException;
 import com.inatandev.dscatalog.services.exception.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CategoryService {
@@ -24,9 +24,9 @@ public class CategoryService {
     private CategoryRepository repository;
 
     @Transactional(readOnly = true)
-    public List<CategoryDTO> findAll() {
-        List<Category> list = repository.findAll();
-        return list.stream().map(x -> new CategoryDTO(x)).collect(Collectors.toList());
+    public Page<CategoryDTO> findAllPaged(PageRequest pageRequest) {
+        Page<Category> list = repository.findAll(pageRequest);
+        return list.map(x -> new CategoryDTO(x));
     }
 
     @Transactional(readOnly = true)
@@ -64,7 +64,7 @@ public class CategoryService {
         try{
             repository.deleteById(id);
         }catch (DataIntegrityViolationException e){
-            throw new DatabaseExcepion("Falha de integridade referencial");
+            throw new DatabaseException("Falha de integridade referencial");
         }
     }
 }

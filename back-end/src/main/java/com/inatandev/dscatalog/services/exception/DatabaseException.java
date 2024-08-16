@@ -1,9 +1,9 @@
 package com.inatandev.dscatalog.services.exception;
 
-public class DatabaseExcepion extends RuntimeException {
+public class DatabaseException extends RuntimeException {
     private static final long serialVersionUID = 1L;
 
-    public DatabaseExcepion(String message) {
+    public DatabaseException(String message) {
         super(message);
     }
 }
